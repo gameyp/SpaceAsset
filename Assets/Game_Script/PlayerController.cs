@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -10,6 +11,8 @@ public class PlayerController : MonoBehaviour
     public float runMultiplier = 1.3f;
     public float gravity = 9.81f;
     public float jumpHeight = 1.5f;
+    public Text healthText;
+    public int health = 100;
 
     private PlayerInput playerInput;
     private CharacterController characterController;
@@ -130,6 +133,7 @@ public class PlayerController : MonoBehaviour
     {
         handleRotation();
         handleAnimation();
+        healthText.text = "Health: " + health;
     }
 
     void FixedUpdate()
