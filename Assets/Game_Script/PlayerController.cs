@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -11,8 +12,10 @@ public class PlayerController : MonoBehaviour
     public float runMultiplier = 1.3f;
     public float gravity = 9.81f;
     public float jumpHeight = 1.5f;
-    public Text healthText;
-    public int health = 100;
+    public int maxHealth = 100;
+    public int currentHealth;
+
+    public HealthBar healthBar;
 
     private PlayerInput playerInput;
     private CharacterController characterController;
@@ -37,6 +40,12 @@ public class PlayerController : MonoBehaviour
     private float timeSinceLastGrounded = 0.0f;
     private float jumpCooldown = 0.2f; // Add this variable for jump cooldown
 
+    void Start()
+    {
+        currentHealth = maxHealth;
+        healthBar.SetMaxHealth(maxHealth);
+    }
+
     void Awake()
     {
         playerInput = new PlayerInput();
@@ -54,6 +63,19 @@ public class PlayerController : MonoBehaviour
         playerInput.CharacterControls.Shoot.started += OnShoot; // Add this line to handle shoot input
         playerInput.CharacterControls.SwordAttack.started += OnSwordAttack; // Add this line to handle sword attack input
     }
+
+    void TakeDamage(int damage)
+    {
+        currentHealth -= damage;
+        healthBar.SetHealth(currentHealth);
+
+        if (currentHealth <= 0)
+        {
+            // Load the main menu scene
+            SceneManager.LoadScene("MenuScene");
+        }
+    }
+
 
     void OnAim(InputAction.CallbackContext context)
     {
@@ -133,7 +155,11 @@ public class PlayerController : MonoBehaviour
     {
         handleRotation();
         handleAnimation();
-        healthText.text = "Health: " + health;
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            TakeDamage(10);
+        }
+
     }
 
     void FixedUpdate()

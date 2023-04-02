@@ -5,7 +5,7 @@ using UnityEngine;
 public class PauseMenu : MonoBehaviour
 {
     public GameObject pauseMenuCanvas;
-    public HealthUIController healthUIController;
+    public GameObject HealthBarCanvas;
     private bool isPaused = false;
 
     void Update()
@@ -28,7 +28,7 @@ public class PauseMenu : MonoBehaviour
         pauseMenuCanvas.SetActive(true);
         Time.timeScale = 0f;
         isPaused = true;
-        healthUIController.SetHealthCanvasActive(false);
+        HealthBarCanvas.SetActive(false);
     }
 
     public void Resume()
@@ -36,7 +36,7 @@ public class PauseMenu : MonoBehaviour
         pauseMenuCanvas.SetActive(false);
         Time.timeScale = 1f;
         isPaused = false;
-        healthUIController.SetHealthCanvasActive(true);
+        HealthBarCanvas.SetActive(true);
     }
 
     public void Exit()
